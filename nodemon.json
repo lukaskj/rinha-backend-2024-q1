@@ -1,0 +1,9 @@
+{
+  "verbose": false,
+  "watch": ["src"],
+  "ext": "ts",
+  "execMap": {
+    "ts": "ts-node --swc ./src/index.ts"
+  },
+  "ignore": ["*.test.*", "*.spec.*", "**/__test__/**", "**/fixtures/**"]
+}
