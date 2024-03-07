@@ -1,3 +1,4 @@
+import { esbuildDecorators } from "@anatine/esbuild-decorators";
 import * as esbuild from "esbuild";
 
 const sharedConfig = {
@@ -12,13 +13,7 @@ const sharedConfig = {
   sourcemap: true,
   keepNames: true,
   logLevel: "info",
-  // banner: {
-  //   js: "import { createRequire } from 'module';const require = createRequire(import.meta.url);",
-  // },
-  // plugins: [esbuildDecorators()],
-  // external: Object.keys(packageJson.default.dependencies).concat(
-  //   Object.keys(packageJson.default.peerDependencies || {}),
-  // ),
+  plugins: [esbuildDecorators()],
 };
 
 await esbuild.build({
