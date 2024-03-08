@@ -1,14 +1,23 @@
+import Fastify, { FastifyInstance } from "fastify";
 import "reflect-metadata";
+import Container from "typedi";
+import { App } from "./app";
 
-import Koa from "koa";
-import { useKoaServer } from "routing-controllers";
-import { UserController } from "./controllers/user-controller";
+const server: FastifyInstance = Fastify({});
 
-const server = new Koa();
+// const opts: RouteShorthandOptions = {
+//   schema: {
+//     response: {
+//       200: {
+//         type: "object",
+//         properties: {
+//           pong: {
+//             type: "string",
+//           },
+//         },
+//       },
+//     },
+//   },
+// };
 
-const app = useKoaServer(server, {
-  cors: false,
-  controllers: [UserController],
-});
-
-app.listen(3000);
+Container.get(App).start(server);

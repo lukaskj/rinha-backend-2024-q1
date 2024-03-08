@@ -6,7 +6,7 @@ const sharedConfig = {
   // outfile: "dist/index.mjs",
   bundle: true,
   treeShaking: true,
-  minify: false,
+  minify: true,
   // platform: "node",
   format: "esm",
   // target: "esnext",

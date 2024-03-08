@@ -27,12 +27,9 @@
     "@koa/cors": "^5.0.0",
     "@swc/core": "^1.4.5",
     "@types/jest": "^29.5.12",
-    "@types/koa": "^2.15.0",
-    "@types/koa-bodyparser": "^4.3.12",
     "@types/node": "^20.11.25",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
-    "cors": "^2.8.5",
     "esbuild": "^0.20.1",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -65,14 +62,10 @@
     "!**/test/**"
   ],
   "dependencies": {
-    "@koa/multer": "^3.0.2",
-    "@koa/router": "^12.0.1",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.1",
-    "koa": "^2.15.0",
-    "koa-bodyparser": "^4.4.1",
+    "fastify": "^4.26.2",
+    "fluent-json-schema": "^4.2.1",
     "reflect-metadata": "^0.2.1",
-    "routing-controllers": "^0.10.4"
+    "typedi": "^0.10.0"
   },
   "lint-staged": {
     "*.ts": "eslint --fix",

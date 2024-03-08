@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "module": "commonjs",
+    "module": "ES2022",
     "target": "ES2022",
     "moduleResolution": "node",
     "declaration": true,
@@ -24,9 +24,16 @@
     "noUnusedParameters": true /* Report errors on unused parameters. */,
     "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
     "esModuleInterop": true,
-    "strictPropertyInitialization": true,
-    "resolveJsonModule": true,
+    "strictPropertyInitialization": false,
+    "resolveJsonModule": true
+  },
+  "ts-node": {
+    // these options are overrides used only by ts-node
+    // same as the --compilerOptions flag and the TS_NODE_COMPILER_OPTIONS environment variable
+    "compilerOptions": {
+      "module": "commonjs"
+    }
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist/"]
 }
