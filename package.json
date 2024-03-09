@@ -9,7 +9,8 @@
     "prebuild": "npm run clean",
     "build": "node esbuild/build.mjs",
     "build:prod": "npm run lint && npm run build",
-    "start": "tsx --watch src/index.ts",
+    "start": "nodemon src/index.ts",
+    "dev": "nodemon src/index.ts",
     "format": "prettier --write src/",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -19,8 +20,8 @@
     "test:debug": "node --inspect=0.0.0.0:5001 -r ts-node/register node_modules/jest/bin/jest.js --runInBand  --config ./jest.config.js",
     "prepare": "husky",
     "db:generate": "drizzle-kit generate:pg",
-    "db:migrate": "tsx drizzle/migrate.ts",
-    "db:seed": "tsx drizzle/seed.ts"
+    "db:migrate": "ts-node --swc drizzle/migrate.ts",
+    "db:seed": "ts-node --swc drizzle/seed.ts"
   },
   "devDependencies": {
     "@anatine/esbuild-decorators": "^0.2.19",
@@ -48,7 +49,6 @@
     "rimraf": "^5.0.5",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
-    "tsx": "^4.7.1",
     "typescript": "^5.4.2"
   },
   "engines": {

@@ -1,22 +1,11 @@
-import { IsDefined, IsEnum, IsInt, IsNotEmpty, IsNumber, IsPositive, IsString, Length } from "class-validator";
 import { TransactionTypeEnum } from "../enum/transaction-type.enum";
 import S from "fluent-json-schema";
 
 export class TransactionRequest {
-  @IsDefined()
-  @IsNumber()
-  @IsPositive()
-  @IsInt()
   valor: number;
 
-  @IsNotEmpty()
-  @IsString()
-  @IsEnum(TransactionTypeEnum)
   tipo: TransactionTypeEnum;
 
-  @IsNotEmpty()
-  @IsString()
-  @Length(1, 10)
   descricao: string;
 }
 export const TransactionRequestSchema = S.object()

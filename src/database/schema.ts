@@ -1,12 +1,13 @@
 import { relations } from "drizzle-orm";
-import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, smallint, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 export const transactions = pgTable("transactions", {
   id: serial("id"),
-  amount: integer("amount"),
-  description: text("description"),
+  amount: integer("amount").notNull(),
+  type: smallint("type").notNull(),
+  description: text("description").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
-  clientId: integer("client_id"),
+  clientId: integer("client_id").notNull(),
 });
 
 export const transactionsRelations = relations(transactions, ({ one }) => ({
@@ -21,9 +22,9 @@ export type Transactions = typeof transactions.$inferSelect;
 export type NewTransactions = typeof transactions.$inferInsert;
 
 export const clients = pgTable("client", {
-  id: integer("id"),
-  curLimit: integer("cur_limit"),
-  initialBalance: integer("initial_balance"),
+  id: integer("id").notNull(),
+  limit: integer("limit").notNull(),
+  balance: integer("balance").notNull(),
 });
 
 export const clientsRelations = relations(clients, ({ many }) => ({

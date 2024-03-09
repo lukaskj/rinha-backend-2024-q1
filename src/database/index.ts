@@ -1,3 +1,6 @@
+import { config } from "dotenv";
+config();
+
 import { Pool } from "pg";
 import * as schema from "./schema";
 import { NodePgDatabase, drizzle } from "drizzle-orm/node-postgres/driver";
@@ -8,6 +11,7 @@ export const pool = new Pool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
+  idleTimeoutMillis: 1000,
 });
 
 export const databaseService: NodePgDatabase<typeof schema> = drizzle(pool, { schema });

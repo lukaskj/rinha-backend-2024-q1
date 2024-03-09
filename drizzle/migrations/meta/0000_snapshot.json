@@ -1,5 +1,5 @@
 {
-  "id": "d459b3b5-fdfa-498f-b247-aac90e894b62",
+  "id": "14f2773c-5761-4a16-b60c-00027dffe407",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -12,19 +12,19 @@
           "name": "id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
-        "cur_limit": {
-          "name": "cur_limit",
+        "limit": {
+          "name": "limit",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
-        "initial_balance": {
-          "name": "initial_balance",
+        "balance": {
+          "name": "balance",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
@@ -46,13 +46,19 @@
           "name": "amount",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
         },
         "description": {
           "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
@@ -65,7 +71,7 @@
           "name": "client_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
