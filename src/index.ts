@@ -2,6 +2,8 @@ import Fastify, { FastifyInstance } from "fastify";
 import "reflect-metadata";
 import Container from "typedi";
 import { App } from "./app";
+import { config } from "dotenv";
+config();
 
 const server: FastifyInstance = Fastify({});
 
