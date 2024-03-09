@@ -14,7 +14,7 @@ export class App {
     this.routes.registerRoutes(server);
     try {
       const PORT = process.env.PORT || 3000;
-      await server.listen({ port: Number(PORT) });
+      await server.listen({ port: Number(PORT), host: "0.0.0.0" });
       const address = server.server.address();
       const port = typeof address === "string" ? address : address?.port;
       console.log(`Running on port ${port}`);
