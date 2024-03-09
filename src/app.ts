@@ -2,6 +2,7 @@
 import { FastifyInstance } from "fastify";
 import { Routes } from "./routes";
 import { Injectable } from "./types";
+import { pool } from "./database";
 
 @Injectable()
 export class App {
@@ -20,6 +21,8 @@ export class App {
     } catch (err) {
       server.log.error(err);
       process.exit(1);
+    } finally {
+      await pool.end();
     }
   }
 
