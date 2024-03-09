@@ -18,6 +18,7 @@ const sharedConfig = {
 
 await esbuild.build({
   ...sharedConfig,
+  format: "cjs",
   platform: "node",
   outfile: "dist/index.js",
 });
