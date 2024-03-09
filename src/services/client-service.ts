@@ -57,31 +57,41 @@ export class ClientService {
 
     const transactionType = Number(TransactionTypeEnum[transactionData.tipo]);
 
-    if (transactionType === -1 && client.balance - transactionData.valor < -client.limit) {
+    const newBalance = client.balance + transactionData.valor * transactionType;
+
+    if (transactionType === -1 && newBalance < -client.limit) {
       throw new HttpException(422, "Transação ultrapassa o limite disponível.");
     }
 
-    await databaseService.transaction(async (tx) => {
-      await tx
-        .update(clients)
-        .set({
-          balance: client.balance + transactionData.valor * transactionType,
-        })
-        .where(eq(clients.id, clientId));
+    await databaseService.transaction(
+      async (tx) => {
+        await tx.execute(sql`select pg_advisory_xact_lock(${clientId})`);
 
-      await tx.insert(transactions).values({
-        amount: transactionData.valor,
-        clientId: client.id,
-        description: transactionData.descricao,
-        type: transactionType,
-      });
+        const updateClientBalance = tx
+          .update(clients)
+          .set({
+            balance: newBalance,
+          })
+          .where(eq(clients.id, clientId));
 
-      // await Promise.all([insertTransaction, updateClientBalance]);
-    });
+        const insertTransaction = tx.insert(transactions).values({
+          amount: transactionData.valor,
+          clientId: client.id,
+          description: transactionData.descricao,
+          type: transactionType,
+        });
+
+        await Promise.all([insertTransaction, updateClientBalance]);
+      },
+      {
+        isolationLevel: "read committed",
+        accessMode: "read write",
+      },
+    );
 
     return {
       limite: client.limit,
-      saldo: client.balance + transactionData.valor * transactionType,
+      saldo: newBalance,
     };
   }
 
