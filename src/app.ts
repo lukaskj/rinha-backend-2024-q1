@@ -2,6 +2,7 @@
 import { FastifyInstance } from "fastify";
 import { Routes } from "./routes";
 import { Injectable } from "./types";
+import { writeFile } from "fs/promises";
 
 @Injectable()
 export class App {
@@ -12,7 +13,7 @@ export class App {
     this.registerParser(server);
     this.routes.registerRoutes(server);
     try {
-      const PORT = process.env.PORT || 9999;
+      const PORT = process.env.PORT || 3000;
       await server.listen({ port: Number(PORT) });
       const address = server.server.address();
       const port = typeof address === "string" ? address : address?.port;
@@ -30,6 +31,31 @@ export class App {
       if (error.validation) {
         error.statusCode = 422;
         reply.status(422).send(error);
+        return;
+      } else {
+        if (
+          process.env.DEBUG &&
+          (error.statusCode === undefined ||
+            (error.statusCode !== 400 && error.statusCode !== 404 && error.statusCode !== 422))
+        ) {
+          new Promise((resolve) => {
+            writeFile(
+              `./logs/log-${new Date().getTime()}.json`,
+              JSON.stringify(
+                {
+                  url: _request.url,
+                  body: _request.body,
+                  message: error.message,
+                  statusCode: error.statusCode,
+                  error: error.name,
+                },
+                null,
+                2,
+              ),
+            );
+            resolve(true);
+          });
+        }
       }
       reply.send(error);
     });
