@@ -11,7 +11,8 @@ export const pool = new Pool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  idleTimeoutMillis: 1000,
+  idleTimeoutMillis: 15000,
+  ssl: false,
 });
 
 export const databaseService: NodePgDatabase<typeof schema> = drizzle(pool, { schema });

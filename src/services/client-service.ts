@@ -18,7 +18,7 @@ type TBalance = {
 export class ClientService {
   constructor() {}
 
-  public async getBalance(id: number): Promise<TBalance> {
+  private async _getBalance(id: number): Promise<TBalance> {
     const balances = await databaseService
       .select({
         clientId: transactions.clientId,
@@ -57,28 +57,36 @@ export class ClientService {
 
     const transactionType = Number(TransactionTypeEnum[transactionData.tipo]);
 
-    const balance = await this.getBalance(client.id);
-
-    if (transactionType === -1 && balance.balance - transactionData.valor < -client.limit) {
+    if (transactionType === -1 && client.balance - transactionData.valor < -client.limit) {
       throw new HttpException(422, "Transação ultrapassa o limite disponível.");
     }
 
-    await databaseService.insert(transactions).values({
-      amount: transactionData.valor,
-      clientId: client.id,
-      description: transactionData.descricao,
-      type: transactionType,
+    await databaseService.transaction(async (tx) => {
+      await tx
+        .update(clients)
+        .set({
+          balance: client.balance + transactionData.valor * transactionType,
+        })
+        .where(eq(clients.id, clientId));
+
+      await tx.insert(transactions).values({
+        amount: transactionData.valor,
+        clientId: client.id,
+        description: transactionData.descricao,
+        type: transactionType,
+      });
+
+      // await Promise.all([insertTransaction, updateClientBalance]);
     });
 
     return {
       limite: client.limit,
-      saldo: balance.balance + transactionData.valor * transactionType,
+      saldo: client.balance + transactionData.valor * transactionType,
     };
   }
 
   public async statement(clientId: number): Promise<Statement> {
     const client = await this.getClient(clientId);
-    const balance = await this.getBalance(clientId);
 
     const transactionList = await this.lastTransactions(clientId);
 
@@ -86,7 +94,7 @@ export class ClientService {
       saldo: {
         data_extrato: new Date(),
         limite: client.limit,
-        total: balance.balance,
+        total: client.balance,
       },
       ultimas_transacoes: transactionList,
     };

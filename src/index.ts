@@ -9,20 +9,7 @@ import { pool } from "./database";
 
 const server: FastifyInstance = Fastify({});
 
-// const opts: RouteShorthandOptions = {
-//   schema: {
-//     response: {
-//       200: {
-//         type: "object",
-//         properties: {
-//           pong: {
-//             type: "string",
-//           },
-//         },
-//       },
-//     },
-//   },
-// };
+if (process.env.DEBUG) console.log("[+] DEBUG");
 
 const signals = [
   "SIGABRT",
