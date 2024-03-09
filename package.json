@@ -20,8 +20,8 @@
     "test:debug": "node --inspect=0.0.0.0:5001 -r ts-node/register node_modules/jest/bin/jest.js --runInBand  --config ./jest.config.js",
     "prepare": "husky",
     "db:generate": "drizzle-kit generate:pg",
-    "db:migrate": "ts-node --swc drizzle/migrate.ts",
-    "db:seed": "ts-node --swc drizzle/seed.ts"
+    "db:migrate": "tsx drizzle/migrate.ts",
+    "db:seed": "tsx drizzle/seed.ts"
   },
   "devDependencies": {
     "@anatine/esbuild-decorators": "^0.2.19",
@@ -48,7 +48,6 @@
     "prettier": "^3.2.5",
     "rimraf": "^5.0.5",
     "ts-jest": "^29.1.2",
-    "ts-node": "^10.9.2",
     "typescript": "^5.4.2"
   },
   "engines": {
@@ -74,7 +73,7 @@
     "pg": "^8.11.3",
     "postgres": "^3.4.3",
     "reflect-metadata": "^0.2.1",
-    "typedi": "^0.10.0"
+    "tsx": "^4.7.1"
   },
   "lint-staged": {
     "*.ts": "eslint --fix",
