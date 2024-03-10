@@ -12,3 +12,5 @@
 - [**Fastify**](https://fastify.dev/)
 - [**Postgres**](https://www.postgresql.org/docs/)
 - [**Nginx**](https://nginx.org/en/docs/)
+
+[Link da Rinha](https://github.com/zanfranceschi/rinha-de-backend-2024-q1)
