@@ -14,7 +14,6 @@ CREATE UNLOGGED TABLE IF NOT EXISTS "transactions" (
 );
 
 CREATE INDEX IF NOT EXISTS idx_client_id ON "transactions" (client_id);
-CREATE INDEX IF NOT EXISTS idx_client_id_type ON "transactions" (client_id, type);
 
 CREATE EXTENSION IF NOT EXISTS pg_prewarm;
 
