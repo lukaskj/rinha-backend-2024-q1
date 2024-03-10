@@ -9,9 +9,11 @@ export class TransactionRequest {
   descricao: string;
 }
 export const TransactionRequestSchema = S.object()
-  .prop("valor", S.number().minimum(0).required())
+  .prop("valor", S.integer().minimum(0).required())
   .prop("tipo", S.string().enum(Object.values(TransactionTypeEnum)).required())
   .prop("descricao", S.string().minLength(1).maxLength(10).required());
+
+export const ClientIdParam = S.object().prop("id", S.integer().minimum(0).required());
 
 export class TransctionResponse {
   limite: number;

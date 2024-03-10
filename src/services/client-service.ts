@@ -1,5 +1,5 @@
 import { desc, eq, sql } from "drizzle-orm";
-import { databaseService } from "../database";
+import { db } from "../database";
 import { Client, clients, transactions } from "../database/schema";
 import { LimitBalanceResponse } from "../dto/limit-balance-response.dto";
 import { Statement } from "../dto/statement.sto";
@@ -14,7 +14,7 @@ type TBalance = {
 };
 
 export async function _getBalance(id: number): Promise<TBalance> {
-  const balances = await databaseService
+  const balances = await db
     .select({
       clientId: transactions.clientId,
       balance: sql<number>`sum(${transactions.amount} * ${transactions.type})`.mapWith(Number),
@@ -39,7 +39,8 @@ export async function getClient(clientId: number): Promise<Client> {
   if (clientId > 5 || clientId <= 0) {
     throw new HttpException(404); // =)
   }
-  const client = await databaseService.query.clients.findFirst({ where: eq(clients.id, clientId) });
+
+  const client = await db.query.clients.findFirst({ where: eq(clients.id, clientId) });
 
   if (client === undefined) {
     throw new HttpException(404);
@@ -61,7 +62,7 @@ export async function addTransaction(
     throw new HttpException(422, "Transação ultrapassa o limite disponível.");
   }
 
-  await databaseService.transaction(
+  await db.transaction(
     async (tx) => {
       await tx.execute(sql`select pg_advisory_xact_lock(${clientId})`);
 
@@ -109,7 +110,7 @@ export async function statement(clientId: number): Promise<Statement> {
 }
 
 export async function lastTransactions(clientId: number): Promise<Transaction[]> {
-  const list = await databaseService
+  const list = await db
     .select()
     .from(transactions)
     .where(eq(transactions.clientId, clientId))
